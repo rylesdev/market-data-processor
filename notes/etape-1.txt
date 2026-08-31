@@ -1,0 +1,36 @@
+Étape 1 : Java I/O, Automatisation et Lecture de Fichiers (WatchService)
+1. Le Brief Théorique (Pourquoi on fait ça ?)
+Dans ton futur poste chez BNP, l'une des briques fondamentales consiste à ingérer des flux de fichiers qui arrivent en continu. Avant d'utiliser des outils lourds ou des frameworks, il faut comprendre comment Java interagit directement avec le système d'exploitation pour écouter un répertoire.
+
+C'est là qu'intervient le WatchService. C'est une API native de Java (java.nio.file) qui permet de surveiller un dossier en temps réel pour détecter des événements (création, modification, suppression de fichiers) sans avoir à faire de boucles de vérification inefficaces (le fameux polling qui consomme du CPU pour rien).
+
+Conjointement, pour lire ces fichiers (souvent des CSV de plusieurs mégaoctets, voire gigaoctets), on n'utilise jamais un Files.readAllBytes() qui chargerait tout le fichier en mémoire vive et risquerait de faire crasher l'application par manque de mémoire (OutOfMemoryError). On utilise un flux de lecture séquentiel ligne par ligne (BufferedReader ou Files.lines()).
+
+2. La Tâche et les Contraintes
+Nous allons poser la première brique de notre projet fil rouge : le File Watcher Service.
+
+Ton objectif :
+Créer une classe Java (hors Spring pour l'instant) qui :
+
+Surveille un dossier spécifique sur ton disque (par exemple, un dossier input-files à la racine de ton projet).
+
+Détecte lorsqu'un nouveau fichier (ex: transactions.csv) y est déposé.
+
+Ouvre ce fichier de manière sécurisée et lise son contenu ligne par ligne.
+
+Affiche chaque ligne dans la console.
+
+Les classes clés à explorer dans la documentation Java :
+
+java.nio.file.FileSystems et FileSystem
+
+java.nio.file.WatchService
+
+java.nio.file.Path et Paths
+
+java.nio.file.StandardWatchEventKinds (notamment ENTRY_CREATE)
+
+java.io.BufferedReader ou java.nio.file.Files.lines(Path)
+
+3. À toi de jouer (Time-box : 1h30 max)
+Crée ton projet Java sous IntelliJ, écris ton script de surveillance, teste-le en créant un fichier texte ou CSV dans le dossier surveillé, et fais-moi un retour sur ton code ou sur ton premier blocage si tu en rencontres un !
