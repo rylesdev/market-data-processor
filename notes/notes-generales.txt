@@ -1,0 +1,16 @@
+Les méthodes clés à utiliser
+Files.newBufferedWriter(outputPath)
+    - API : Mixte (NIO pour Files, retourne de l'IO BufferedWriter)
+    - Rôle : Ouvre un flux d'écriture vers un fichier cible. Si le fichier n'existe pas, il le crée.
+
+writer.write("donnees à ecrire")
+    - API : IO (java.io.BufferedWriter)
+    - Rôle : Écrit du texte (ou une ligne de ton CSV) dans le fichier.
+
+writer.newLine()
+    - API : IO (java.io.BufferedWriter)
+    - Rôle : Ajoute un saut de ligne propre (adapté au système d'exploitation, que tu sois sur Windows, Mac ou Linux).
+
+writer.close() (ou l'utilisation d'un bloc try-with-resources)
+    - API : IO (java.io.BufferedWriter)
+    - Rôle : Ferme le flux pour s'assurer que toutes les données sont bien enregistrées sur le disque et libère le fichier.
