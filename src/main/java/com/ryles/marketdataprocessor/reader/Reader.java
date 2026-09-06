@@ -16,7 +16,7 @@ public class Reader {
         this.resultats = new HashMap<>();
     }
 
-    // Ajoute la liste des Paths et des lignes dans la Map
+    // Ajoute la liste des Paths et les lignes dans la Map
     public void readAllLines() throws IOException {
         for (Path var : this.liste) {
             List<String> lignes = Files.readAllLines(var);

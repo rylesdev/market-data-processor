@@ -1,5 +1,7 @@
 package com.ryles.marketdataprocessor.controller;
 
+import com.ryles.marketdataprocessor.parser.Parser;
+import com.ryles.marketdataprocessor.parser.ParserCSV;
 import com.ryles.marketdataprocessor.reader.Reader;
 import com.ryles.marketdataprocessor.receiver.Receiver;
 
@@ -27,10 +29,16 @@ public class Controller {
         reader.readAllLines();
 
         for (Map.Entry<Path, List<String>> var : reader.getResultats().entrySet()) {
-            System.out.println("Résultat : " + var + "\n");
+
+            for (String foo : var.getValue()) {
+                System.out.println("Résultat : " + foo + "\n");
+            }
         }
 
         System.out.println("test6");
+
+        Parser pCSV = new ParserCSV(reader.getResultats());
+        System.out.println(pCSV.parsing());
 
         receiver.close();
         System.out.println("test7");

@@ -6,7 +6,10 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-public interface Parser {
+public class ParserJSON implements Parser {
 
-    Map<Path,List<MarketData>> parsing();
+    public Map<Path,List<MarketData>> parsing() {
+        return null;
+    }
+
 }
