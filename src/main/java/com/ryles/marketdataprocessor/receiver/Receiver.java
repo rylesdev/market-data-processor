@@ -11,7 +11,7 @@ public class Receiver {
     private List<Path> liste;
 
     public Receiver() throws IOException {
-        this.path = Path.of("input");
+        this.path = Path.of("src", "main", "resources", "input");
         this.ws = FileSystems.getDefault().newWatchService();
         this.path.register(this.ws, StandardWatchEventKinds.ENTRY_CREATE);
         this.liste = new ArrayList<>();
@@ -27,16 +27,20 @@ public class Receiver {
 
         for (WatchEvent<?> event : events) {
             Path contexte = (Path) event.context();
-            liste.add(this.path.resolve(contexte));
+            this.liste.add(this.path.resolve(contexte));
         }
-    }
-
-    public List<Path> getListe() {
-        return liste;
     }
 
     public boolean reset(WatchKey key) {
         return key.reset();
+    }
+
+    public void close() throws IOException {
+        this.ws.close();
+    }
+
+    public List<Path> getListe() {
+        return this.liste;
     }
 
     public Path getPath() {

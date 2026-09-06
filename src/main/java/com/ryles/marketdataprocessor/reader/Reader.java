@@ -16,13 +16,15 @@ public class Reader {
         this.resultats = new HashMap<>();
     }
 
+    // Ajoute la liste des Paths et des lignes dans la Map
     public void readAllLines() throws IOException {
-        for (Path var : liste) {
+        for (Path var : this.liste) {
             List<String> lignes = Files.readAllLines(var);
             this.resultats.put(var,lignes);
         }
     }
 
+    // Retourne la Map
     public Map<Path,List<String>> getResultats() {
         return this.resultats;
     }
