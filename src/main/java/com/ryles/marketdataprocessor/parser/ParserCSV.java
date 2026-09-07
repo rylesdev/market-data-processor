@@ -12,9 +12,11 @@ import java.util.Map;
 
 public class ParserCSV implements Parser {
     private Map<Path, List<String>> resultats;
+    private Map<String,Integer> link;
 
     public ParserCSV(Map<Path,List<String>> resultats) {
         this.resultats = resultats;
+        this.link = new HashMap<>();
     }
 
     // Séparer les attributs (date, symbole...) et instancier MarketData pour les insérer puis mettre dans une list<MarketData>
@@ -23,16 +25,28 @@ public class ParserCSV implements Parser {
         for (Map.Entry<Path, List<String>> var : this.resultats.entrySet()) {
             List<MarketData> mD = new ArrayList<>();
             for (String foo : var.getValue()) {
-                if (foo.equals("date,symbole,prix,volume")) {
+                String bar = foo.trim();
+                String[] chaines = bar.split(",");
+                for (int i=0 ; i<4 ; i++) {
+                    chaines[i] = chaines[i].trim();
+                }
+
+                if (chaines[0].equals("date") ||
+                        chaines[0].equals("symbole") ||
+                        chaines[0].equals("prix") ||
+                        chaines[0].equals("volume")) {
+
+                    for (int i=0 ; i<4 ; i++) {
+                        this.link.put(chaines[i],(Integer)i);
+                    }
+
                     continue;
                 }
 
-                String[] chaines = foo.split(",");
-
-                LocalDateTime date = LocalDateTime.parse(chaines[0]);
-                String symbole = chaines[1];
-                BigDecimal prix = new BigDecimal(chaines[2]);
-                long volume = Long.parseLong(chaines[3]);
+                LocalDateTime date = LocalDateTime.parse(chaines[this.link.get("date")]);
+                String symbole = chaines[this.link.get("symbole")];
+                BigDecimal prix = new BigDecimal(chaines[this.link.get("prix")]);
+                long volume = Long.parseLong(chaines[this.link.get("volume")]);
 
                 mD.add(new MarketData(symbole,date,prix,volume));
             }
