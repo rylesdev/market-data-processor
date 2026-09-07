@@ -9,6 +9,7 @@ import com.ryles.marketdataprocessor.receiver.Receiver;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.WatchKey;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,17 +24,25 @@ public class Controller {
         Reader reader = new Reader(receiver.getListe());
         reader.readAllLines();
 
-        for (Map.Entry<Path, List<String>> var : reader.getResultats().entrySet()) {
-            for (String foo : var.getValue()) {
-                System.out.println("Résultat : " + foo + "\n");
+        List<Parser> parsers = new ArrayList<>();
+
+        for (Map<Path,List<String>> var : reader.getResultats()) {
+            String nom = var.getKey().getFileName().toString();
+
+            if (nom.endsWith(".csv")) {
+                Parser parser = new ParserCSV(var.getValues());
+                parsers.add(parser);
+            } else if (nom.endsWith(".json")) {
+                Parser parser = new ParserJSON(var.getValues());
+                parsers.add(parser);
             }
         }
 
-        Parser pCSV = new ParserCSV(reader.getResultats());
-        Parser pJSON = new ParserJSON(reader.getResultats());
-
-        System.out.println("ParsingCSV : " + pCSV.parsing() + "\n");
-        System.out.println("ParsingJSON : " + pJSON.parsing() + "\n");
+        int i = 1;
+        for (Parser var : parsers) {
+            System.out.println("Parsing : " + i + " : " + var.parsing() + "\n");
+            ++i;
+        }
 
         receiver.close();
     }

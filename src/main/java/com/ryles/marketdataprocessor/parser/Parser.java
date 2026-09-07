@@ -8,5 +8,5 @@ import java.util.Map;
 
 public interface Parser {
 
-    Map<Path,List<MarketData>> parsing();
+    List<MarketData> parsing();
 }
