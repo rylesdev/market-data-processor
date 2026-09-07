@@ -26,14 +26,14 @@ public class Controller {
 
         List<Parser> parsers = new ArrayList<>();
 
-        for (Map<Path,List<String>> var : reader.getResultats()) {
+        for (Map.Entry<Path, List<String>> var : reader.getResultats().entrySet()) {
             String nom = var.getKey().getFileName().toString();
 
             if (nom.endsWith(".csv")) {
-                Parser parser = new ParserCSV(var.getValues());
+                Parser parser = new ParserCSV(var.getValue());
                 parsers.add(parser);
             } else if (nom.endsWith(".json")) {
-                Parser parser = new ParserJSON(var.getValues());
+                Parser parser = new ParserJSON(var.getValue());
                 parsers.add(parser);
             }
         }
