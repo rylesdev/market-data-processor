@@ -17,4 +17,15 @@ public class MarketData {
         this.prix = prix;
         this.volume = volume;
     }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("Symbole : " + this.symbole);
+        sb.append("Date : " + this.date);
+        sb.append("Prix : " + this.prix);
+        sb.append("Volume : " + this.volume);
+
+        return sb.toString();
+    }
 }

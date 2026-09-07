@@ -12,15 +12,17 @@ import java.util.Map;
 
 public class ParserJSON implements Parser {
     private List<String> resultats;
+    List<MarketData> mD;
 
     public ParserJSON(List<String> resultats) {
         this.resultats = resultats;
+        this.mD = new ArrayList<>();
     }
 
+    @Override
     public List<MarketData> parsing() {
         StringBuffer sb = new StringBuffer();
         StringBuffer stack = new StringBuffer();
-        List<MarketData> mD = new ArrayList<>();
 
         // For each qui sert à uniformiser les formats JSON pour que tout soit sur une seule ligne
         for (String foo : this.resultats) {
@@ -54,12 +56,12 @@ public class ParserJSON implements Parser {
                 BigDecimal prix = new BigDecimal(chaine[2].substring(valPrix+2));
                 long volume = Long.parseLong(chaine[3].substring(valVolume+2));
 
-                mD.add(new MarketData(symbole,date,prix,volume));
+                this.mD.add(new MarketData(symbole,date,prix,volume));
 
                 flag = false;
                 stack.setLength(0);
             }
         }
-        return mD;
+        return this.mD;
     }
 }

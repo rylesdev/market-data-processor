@@ -1,5 +1,6 @@
 package com.ryles.marketdataprocessor.controller;
 
+import com.ryles.marketdataprocessor.model.MarketData;
 import com.ryles.marketdataprocessor.parser.Parser;
 import com.ryles.marketdataprocessor.parser.ParserCSV;
 import com.ryles.marketdataprocessor.parser.ParserJSON;
@@ -40,7 +41,12 @@ public class Controller {
 
         int i = 1;
         for (Parser var : parsers) {
-            System.out.println("Parsing : " + i + " : " + var.parsing() + "\n");
+            List<MarketData> marketData = var.parsing();
+
+            System.out.println("Parsing " + i + " : \n");
+            for (int j=0 ; j<marketData.size() ; j++) {
+                System.out.println("MarketData num " + j + " " + marketData.get(j).toString() + "\n");
+            }
             ++i;
         }
 

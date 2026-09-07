@@ -13,15 +13,17 @@ import java.util.Map;
 public class ParserCSV implements Parser {
     private List<String> resultats;
     private Map<String,Integer> link;
+    List<MarketData> mD;
 
     public ParserCSV(List<String> resultats) {
         this.resultats = resultats;
         this.link = new HashMap<>();
+        this.mD = new ArrayList<>();
     }
 
     // Séparer les attributs (date, symbole...) et instancier MarketData pour les insérer puis mettre dans une list<MarketData>
+    @Override
     public List<MarketData> parsing() {
-        List<MarketData> mD = new ArrayList<>();
         for (String foo : this.resultats) {
             String bar = foo.trim();
             String[] chaines = bar.split(",");
@@ -46,8 +48,8 @@ public class ParserCSV implements Parser {
             BigDecimal prix = new BigDecimal(chaines[this.link.get("prix")]);
             long volume = Long.parseLong(chaines[this.link.get("volume")]);
 
-            mD.add(new MarketData(symbole, date, prix, volume));
+            this.mD.add(new MarketData(symbole, date, prix, volume));
         }
-        return mD;
+        return this.mD;
     }
 }
