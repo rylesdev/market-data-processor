@@ -1,9 +1,9 @@
 package com.ryles.marketdataprocessor.parser;
 
+import com.ryles.marketdataprocessor.exception.*;
 import com.ryles.marketdataprocessor.model.MarketData;
 
 import java.math.BigDecimal;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,15 +12,18 @@ import java.util.Map;
 
 public class ParserJSON implements Parser {
     private List<String> resultats;
-    List<MarketData> mD;
+    private Map<String,String> link;
+    private List<MarketData> mD;
 
     public ParserJSON(List<String> resultats) {
         this.resultats = resultats;
+        this.link = new HashMap<>();
         this.mD = new ArrayList<>();
     }
 
+    // Sert à parser en entrant la liste des lignes d'un fichier et en retournant la liste Marketdata
     @Override
-    public List<MarketData> parsing() {
+    public List<MarketData> parsing() throws AttributManquantException, AttributExcedantException, ChampManquantException, DeuxPointsManquantsException, ValeurManquanteException {
         StringBuffer sb = new StringBuffer();
         StringBuffer stack = new StringBuffer();
 
@@ -35,6 +38,7 @@ public class ParserJSON implements Parser {
         // Boucle qui sert à stack toutes les lignes entre { et } et qui instancie MarketData
         for (int i=0 ; i<longueur ; i++) {
             if (sb.charAt(i)=='{') {
+                this.link = new HashMap<>();
                 flag = true;
                 continue;
             }
@@ -46,15 +50,66 @@ public class ParserJSON implements Parser {
             if (flag && sb.charAt(i)=='}') {
                 String[] chaine = stack.toString().split(",");
 
-                int valDate = chaine[0].indexOf(":");
-                int valSymbole = chaine[1].indexOf(":");
-                int valPrix = chaine[2].indexOf(":");
-                int valVolume = chaine[3].indexOf(":");
+                if (chaine.length < 4) {
+                    throw new AttributManquantException("Il manque un attribut au fichier");
+                }
 
-                LocalDateTime date = LocalDateTime.parse(chaine[0].substring(valDate+3,chaine[0].length()-1));
-                String symbole = chaine[1].substring(valSymbole+3,chaine[1].length()-1);
-                BigDecimal prix = new BigDecimal(chaine[2].substring(valPrix+2));
-                long volume = Long.parseLong(chaine[3].substring(valVolume+2));
+                if (chaine.length > 4) {
+                    throw new AttributExcedantException("Il y a un ou plusieurs attributs en trop");
+                }
+
+                for (int j=0 ; j<4 ; j++) {
+                    String[] val = chaine[j].split(":",2);
+
+                    if (val.length < 2) {
+                        throw new DeuxPointsManquantsException("Il manque des ':' au fichier JSON");
+                    }
+
+                    val[0] = val[0].trim();
+                    val[0] = val[0].substring(1,val[0].length()-1);
+                    val[0] = val[0].trim();
+
+                    val[1] = val[1].trim();
+
+                    if (val[1].isEmpty() || val[1].equals("\"\"")) {
+                        throw new ValeurManquanteException("Il manque une valeur à un attribut");
+                    }
+
+                    if (val[1].charAt(0) == '"') {
+                        val[1] = val[1].substring(1, val[1].length() - 1);
+                        val[1] = val[1].trim();
+
+                        if (val[1].isEmpty()) {
+                            throw new ValeurManquanteException("Il manque une valeur à un attribut");
+                        }
+                    }
+
+                    if (    !(val[0].equals("date")) &&
+                            !(val[0].equals("symbole")) &&
+                            !(val[0].equals("prix")) &&
+                            !(val[0].equals("volume"))     ) {
+                        throw new ChampManquantException("Il manque un champ au fichier");
+                    }
+
+                    this.link.put(val[0],val[1]);
+                }
+
+
+                if (    ((this.link.get("date")==null) ||
+                        this.link.get("date").isEmpty()) ||
+                        ((this.link.get("symbole")==null) ||
+                        this.link.get("symbole").isEmpty()) ||
+                        ((this.link.get("prix")==null) ||
+                        this.link.get("prix").isEmpty()) ||
+                        ((this.link.get("volume")==null) ||
+                        this.link.get("volume").isEmpty())     ) {
+                    throw new AttributManquantException("Il manque un attribut au fichier");
+                }
+
+                LocalDateTime date = LocalDateTime.parse(this.link.get("date"));
+                String symbole = this.link.get("symbole");
+                BigDecimal prix = new BigDecimal(this.link.get("prix"));
+                long volume = Long.parseLong(this.link.get("volume"));
 
                 this.mD.add(new MarketData(symbole,date,prix,volume));
 

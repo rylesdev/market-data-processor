@@ -17,11 +17,13 @@ public class Receiver {
         this.liste = new ArrayList<>();
     }
 
+    // Sert à créer une key qui va être retournée quand un fichier est créé dans input
     public WatchKey take() throws InterruptedException {
         WatchKey key = this.ws.take();
         return key;
     }
 
+    // Va prendre la clé pour mettre dans this.liste le chemin (Path) du fichier qui a été créé dans input
     public void pollEvents(WatchKey key) {
         List<WatchEvent<?>> events = key.pollEvents();
 

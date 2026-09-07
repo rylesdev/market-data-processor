@@ -1,5 +1,7 @@
 package com.ryles.marketdataprocessor.reader;
 
+import com.ryles.marketdataprocessor.exception.EmptyFileException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,9 +19,12 @@ public class Reader {
     }
 
     // Ajoute la liste des Paths et les lignes dans la Map
-    public void readAllLines() throws IOException {
+    public void readAllLines() throws IOException, EmptyFileException {
         for (Path var : this.liste) {
             List<String> lignes = Files.readAllLines(var);
+            if (lignes.isEmpty()) {
+                throw new EmptyFileException("Le fichier est vide");
+            }
             this.resultats.put(var,lignes);
         }
     }
