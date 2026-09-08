@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MarketData {
-
     private String symbole;
     private LocalDateTime date;
     private BigDecimal prix;
@@ -27,5 +26,9 @@ public class MarketData {
         sb.append("Volume : " + this.volume);
 
         return sb.toString();
+    }
+
+    public BigDecimal getPrix() {
+        return this.prix;
     }
 }
