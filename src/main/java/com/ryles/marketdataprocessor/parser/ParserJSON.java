@@ -51,11 +51,11 @@ public class ParserJSON implements Parser {
                 String[] chaine = stack.toString().split(",");
 
                 if (chaine.length < 4) {
-                    throw new AttributManquantException("Il manque un attribut au fichier");
+                    throw new AttributManquantException("Il manque un attribut au fichier JSON");
                 }
 
                 if (chaine.length > 4) {
-                    throw new AttributExcedantException("Il y a un ou plusieurs attributs en trop");
+                    throw new AttributExcedantException("Il y a un ou plusieurs attributs en trop dans une ligne du fichier JSON");
                 }
 
                 for (int j=0 ; j<4 ; j++) {
@@ -72,7 +72,7 @@ public class ParserJSON implements Parser {
                     val[1] = val[1].trim();
 
                     if (val[1].isEmpty() || val[1].equals("\"\"")) {
-                        throw new ValeurManquanteException("Il manque une valeur à un attribut");
+                        throw new ValeurManquanteException("Il manque une valeur à un attribut du fichier JSON");
                     }
 
                     if (val[1].charAt(0) == '"') {
@@ -80,7 +80,7 @@ public class ParserJSON implements Parser {
                         val[1] = val[1].trim();
 
                         if (val[1].isEmpty()) {
-                            throw new ValeurManquanteException("Il manque une valeur à un attribut");
+                            throw new ValeurManquanteException("Il manque une valeur à un attribut du fichier JSON");
                         }
                     }
 
@@ -88,22 +88,18 @@ public class ParserJSON implements Parser {
                             !(val[0].equals("symbole")) &&
                             !(val[0].equals("prix")) &&
                             !(val[0].equals("volume"))     ) {
-                        throw new ChampManquantException("Il manque un champ au fichier");
+                        throw new ChampManquantException("Il manque un champ au fichier JSON");
                     }
 
                     this.link.put(val[0],val[1]);
                 }
 
 
-                if (    ((this.link.get("date")==null) ||
-                        this.link.get("date").isEmpty()) ||
-                        ((this.link.get("symbole")==null) ||
-                        this.link.get("symbole").isEmpty()) ||
-                        ((this.link.get("prix")==null) ||
-                        this.link.get("prix").isEmpty()) ||
-                        ((this.link.get("volume")==null) ||
-                        this.link.get("volume").isEmpty())     ) {
-                    throw new AttributManquantException("Il manque un attribut au fichier");
+                if (    (this.link.get("date")==null) ||
+                        (this.link.get("symbole")==null) ||
+                        (this.link.get("prix")==null) ||
+                        (this.link.get("volume")==null)     ) {
+                    throw new AttributManquantException("Il manque un attribut au fichier JSON");
                 }
 
                 LocalDateTime date = LocalDateTime.parse(this.link.get("date"));

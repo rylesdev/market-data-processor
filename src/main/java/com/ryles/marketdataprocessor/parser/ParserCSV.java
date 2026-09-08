@@ -45,7 +45,7 @@ public class ParserCSV implements Parser {
                 chaines[i] = chaines[i].trim();
             }
 
-            if (chaines[0].equals("date") ||
+            if (    chaines[0].equals("date") ||
                     chaines[0].equals("symbole") ||
                     chaines[0].equals("prix") ||
                     chaines[0].equals("volume")) {
@@ -55,7 +55,7 @@ public class ParserCSV implements Parser {
                             !(chaines[i].equals("symbole")) &&
                             !(chaines[i].equals("prix")) &&
                             !(chaines[i].equals("volume"))     ) {
-                        throw new ChampManquantException("Un champ du fichier CSV est inconnu");
+                        throw new ChampManquantException("Un champ du fichier CSV est manquant");
                     }
 
                     this.link.put(chaines[i],i);

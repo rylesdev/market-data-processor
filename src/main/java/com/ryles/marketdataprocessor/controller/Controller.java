@@ -1,5 +1,6 @@
 package com.ryles.marketdataprocessor.controller;
 
+import com.ryles.marketdataprocessor.exception.FichierIncoherentException;
 import com.ryles.marketdataprocessor.model.MarketData;
 import com.ryles.marketdataprocessor.parser.Parser;
 import com.ryles.marketdataprocessor.parser.ParserCSV;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 public class Controller {
 
-    public void start() throws IOException, InterruptedException {
+    public void start() throws IOException, InterruptedException, FichierIncoherentException {
         Receiver receiver = new Receiver();
         WatchKey key = receiver.take();
         receiver.pollEvents(key);
@@ -36,6 +37,8 @@ public class Controller {
             } else if (nom.endsWith(".json")) {
                 Parser parser = new ParserJSON(var.getValue());
                 parsers.add(parser);
+            } else {
+                throw new FichierIncoherentException("Le type de fichier n'est pas accepté");
             }
         }
 
