@@ -48,4 +48,8 @@ public class Receiver {
     public Path getPath() {
         return this.path;
     }
+
+    public void resetListe() {
+        this.liste = new ArrayList<>();
+    }
 }

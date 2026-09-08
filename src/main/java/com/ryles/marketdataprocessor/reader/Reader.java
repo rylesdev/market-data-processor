@@ -5,6 +5,7 @@ import com.ryles.marketdataprocessor.exception.EmptyFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class Reader {
     private Map<Path,List<String>> resultats;
 
     public Reader(List<Path> liste) {
-        this.liste = liste;
+        this.liste = new ArrayList<>(liste);
         this.resultats = new HashMap<>();
     }
 
