@@ -7,14 +7,14 @@ import java.util.List;
 
 public class Receiver {
     private Path path;
+    private List<Path> fichiers;
     private WatchService ws;
-    private List<Path> liste;
 
     public Receiver() throws IOException {
         this.path = Path.of("src", "main", "resources", "input");
+        this.fichiers = new ArrayList<>();
         this.ws = FileSystems.getDefault().newWatchService();
         this.path.register(this.ws, StandardWatchEventKinds.ENTRY_CREATE);
-        this.liste = new ArrayList<>();
     }
 
     // Sert à créer une key qui va être retournée quand un fichier est créé dans input
@@ -23,13 +23,13 @@ public class Receiver {
         return key;
     }
 
-    // Va prendre la clé pour mettre dans this.liste le chemin (Path) du fichier qui a été créé dans input
+    // Va prendre la clé pour mettre dans this.fichier le chemin (Path) du fichier qui a été créé dans input
     public void pollEvents(WatchKey key) {
         List<WatchEvent<?>> events = key.pollEvents();
 
         for (WatchEvent<?> event : events) {
             Path contexte = (Path) event.context();
-            this.liste.add(this.path.resolve(contexte));
+            this.fichiers.add(this.path.resolve(contexte));
         }
     }
 
@@ -41,15 +41,11 @@ public class Receiver {
         this.ws.close();
     }
 
-    public List<Path> getListe() {
-        return this.liste;
+    public List<Path> getFichiers() {
+        return this.fichiers;
     }
 
-    public Path getPath() {
-        return this.path;
-    }
-
-    public void resetListe() {
-        this.liste = new ArrayList<>();
+    public void resetFichier() {
+        this.fichiers = new ArrayList<>();
     }
 }

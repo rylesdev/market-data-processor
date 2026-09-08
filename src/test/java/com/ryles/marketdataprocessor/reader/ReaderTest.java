@@ -21,7 +21,7 @@ public class ReaderTest {
     }
 
     @Test
-    void readAllLinesTest() throws IOException {
+    void readAllLinesTest() throws IOException, InterruptedException {
 
         Path fichier = input.resolve("test-3-lignes.txt");
 
@@ -35,7 +35,7 @@ public class ReaderTest {
     }
 
     @Test
-    void readEmptyFileTest() throws IOException {
+    void readEmptyFileTest() throws IOException, InterruptedException {
 
         Path fichier = input.resolve("test-vide.txt");
 
@@ -47,7 +47,7 @@ public class ReaderTest {
     }
 
     @Test
-    void readMultipleFilesTest() throws IOException {
+    void readMultipleFilesTest() throws IOException, InterruptedException {
 
         Path fichier1 = input.resolve("test-3-lignes.txt");
         Path fichier2 = input.resolve("test-2-lignes.txt");
