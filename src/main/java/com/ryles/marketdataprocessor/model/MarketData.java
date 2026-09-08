@@ -1,7 +1,6 @@
 package com.ryles.marketdataprocessor.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class MarketData {
@@ -28,7 +27,19 @@ public class MarketData {
         return sb.toString();
     }
 
+    public String getSymbole() {
+        return this.symbole;
+    }
+
+    public LocalDateTime getDate() {
+        return this.date;
+    }
+
     public BigDecimal getPrix() {
         return this.prix;
+    }
+
+    public long getVolume() {
+        return this.volume;
     }
 }
