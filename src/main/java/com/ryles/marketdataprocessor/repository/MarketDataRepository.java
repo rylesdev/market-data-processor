@@ -1,0 +1,8 @@
+package com.ryles.marketdataprocessor.repository;
+
+import com.ryles.marketdataprocessor.model.MarketData;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MarketDataRepository extends JpaRepository<MarketData, Integer> {
+
+}
