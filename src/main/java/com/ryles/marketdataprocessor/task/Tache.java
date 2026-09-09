@@ -6,7 +6,6 @@ import com.ryles.marketdataprocessor.parser.Parser;
 import com.ryles.marketdataprocessor.parser.ParserCSV;
 import com.ryles.marketdataprocessor.parser.ParserJSON;
 import com.ryles.marketdataprocessor.reader.Reader;
-import com.ryles.marketdataprocessor.receiver.Receiver;
 import com.ryles.marketdataprocessor.stats.Stats;
 
 import java.io.IOException;

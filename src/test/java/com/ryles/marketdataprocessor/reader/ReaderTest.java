@@ -25,13 +25,13 @@ public class ReaderTest {
 
         Path fichier = input.resolve("test-3-lignes.txt");
 
-        Reader reader = new Reader(List.of(fichier));
+        Reader reader = new Reader(fichier);
 
         reader.readAllLines();
 
-        Map<Path, List<String>> resultats = reader.getResultats();
+        List<String> resultats = reader.getResultats();
 
-        assertEquals(3, resultats.get(fichier).size());
+        assertEquals(3, resultats.size());
     }
 
     @Test
@@ -39,24 +39,11 @@ public class ReaderTest {
 
         Path fichier = input.resolve("test-vide.txt");
 
-        Reader reader = new Reader(List.of(fichier));
+        Reader reader = new Reader(fichier);
 
         reader.readAllLines();
 
-        assertTrue(reader.getResultats().get(fichier).isEmpty());
-    }
-
-    @Test
-    void readMultipleFilesTest() throws IOException, InterruptedException {
-
-        Path fichier1 = input.resolve("test-3-lignes.txt");
-        Path fichier2 = input.resolve("test-2-lignes.txt");
-
-        Reader reader = new Reader(List.of(fichier1, fichier2));
-
-        reader.readAllLines();
-
-        assertEquals(2, reader.getResultats().size());
+        assertTrue(reader.getResultats().isEmpty());
     }
 
     @Test

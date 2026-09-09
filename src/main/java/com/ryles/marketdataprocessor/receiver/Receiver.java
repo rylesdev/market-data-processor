@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Receiver {
     private Path path;
     private List<Path> fichiers;
     private WatchService ws;
 
-    public Receiver() throws IOException {
-        this.path = Path.of("src", "main", "resources", "input");
+    public Receiver(Path path) throws IOException {
+        this.path = path;
         this.fichiers = new ArrayList<>();
         this.ws = FileSystems.getDefault().newWatchService();
         this.path.register(this.ws, StandardWatchEventKinds.ENTRY_CREATE);
@@ -23,7 +24,7 @@ public class Receiver {
         return key;
     }
 
-    // Va prendre la clé pour mettre dans this.fichier le chemin (Path) du fichier qui a été créé dans input
+    // Va prendre la clé pour mettre dans this.fichiers le chemin (Path) du fichier qui a été créé dans input
     public void pollEvents(WatchKey key) {
         List<WatchEvent<?>> events = key.pollEvents();
 
@@ -43,6 +44,10 @@ public class Receiver {
 
     public List<Path> getFichiers() {
         return this.fichiers;
+    }
+
+    public WatchKey poll(long timeout, TimeUnit unit) throws InterruptedException {
+        return this.ws.poll(timeout, unit);
     }
 
     public void resetFichier() {

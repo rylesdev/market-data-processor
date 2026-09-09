@@ -12,7 +12,7 @@ import java.util.*;
 public class Controller {
 
     public void start() throws IOException, InterruptedException, FichierIncoherentException {
-        Receiver receiver = new Receiver();
+        Receiver receiver = new Receiver(Path.of("src", "main", "resources", "input"));
         while (true) {
             WatchKey key = receiver.take();
             receiver.pollEvents(key);
