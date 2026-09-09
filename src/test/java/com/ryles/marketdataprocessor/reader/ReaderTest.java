@@ -1,5 +1,6 @@
 package com.ryles.marketdataprocessor.reader;
 
+import com.ryles.marketdataprocessor.exception.EmptyFileException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,9 +42,9 @@ public class ReaderTest {
 
         Reader reader = new Reader(fichier);
 
-        reader.readAllLines();
-
-        assertTrue(reader.getResultats().isEmpty());
+        assertThrows(EmptyFileException.class, () -> {
+            reader.readAllLines();
+        });
     }
 
     @Test
@@ -51,7 +52,7 @@ public class ReaderTest {
 
         Path fichier = input.resolve("fichier-qui-nexiste-pas.txt");
 
-        Reader reader = new Reader(List.of(fichier));
+        Reader reader = new Reader(fichier);
 
         assertThrows(IOException.class, reader::readAllLines);
     }
