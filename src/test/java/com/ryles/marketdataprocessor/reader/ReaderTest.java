@@ -42,9 +42,7 @@ public class ReaderTest {
 
         Reader reader = new Reader(fichier);
 
-        assertThrows(EmptyFileException.class, () -> {
-            reader.readAllLines();
-        });
+        assertThrows(EmptyFileException.class, reader::readAllLines);
     }
 
     @Test
