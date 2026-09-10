@@ -5,10 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,8 +25,9 @@ public class ReaderTest {
     void readAllLinesTest() throws IOException, InterruptedException {
 
         Path fichier = input.resolve("test-3-lignes.txt");
+        InputStream inputStream = Files.newInputStream(fichier);
 
-        Reader reader = new Reader(fichier);
+        Reader reader = new Reader(inputStream);
 
         reader.readAllLines();
 
@@ -36,13 +37,17 @@ public class ReaderTest {
     }
 
     @Test
-    void readEmptyFileTest() throws IOException, InterruptedException {
+    void readEmptyFileTest() throws IOException {
 
         Path fichier = input.resolve("test-vide.txt");
+        InputStream inputStream = Files.newInputStream(fichier);
 
-        Reader reader = new Reader(fichier);
+        Reader reader = new Reader(inputStream);
 
-        assertThrows(EmptyFileException.class, reader::readAllLines);
+        assertThrows(
+                EmptyFileException.class,
+                reader::readAllLines
+        );
     }
 
     @Test
@@ -50,8 +55,9 @@ public class ReaderTest {
 
         Path fichier = input.resolve("fichier-qui-nexiste-pas.txt");
 
-        Reader reader = new Reader(fichier);
-
-        assertThrows(IOException.class, reader::readAllLines);
+        assertThrows(
+                IOException.class,
+                () -> Files.newInputStream(fichier)
+        );
     }
 }

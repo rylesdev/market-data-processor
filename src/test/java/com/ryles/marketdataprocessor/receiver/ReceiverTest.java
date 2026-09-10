@@ -1,13 +1,12 @@
 package com.ryles.marketdataprocessor.receiver;
 
-import com.ryles.marketdataprocessor.reader.Reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.WatchKey;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ReceiverTest {
 
     private Path path;
+
     @BeforeEach
     void setUp() {
         this.path = Path.of("src", "test", "resources", "input");
@@ -22,6 +22,7 @@ public class ReceiverTest {
 
     @Test
     void readMultipleFilesTest() throws IOException, InterruptedException {
+
         Receiver receiver = new Receiver(this.path);
 
         Path fichier1 = this.path.resolve("test1.txt");

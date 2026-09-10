@@ -4,6 +4,8 @@ import com.ryles.marketdataprocessor.exception.FichierIncoherentException;
 import com.ryles.marketdataprocessor.receiver.Receiver;
 import com.ryles.marketdataprocessor.service.MarketDataService;
 import com.ryles.marketdataprocessor.task.Tache;
+import jakarta.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,11 +15,25 @@ import java.nio.file.Path;
 import java.nio.file.WatchKey;
 import java.util.*;
 
+@Component
 public class Controller {
     private final MarketDataService service;
 
     public Controller(MarketDataService service) {
         this.service = service;
+    }
+
+    @PostConstruct
+    public void init() {
+        Thread thread = new Thread(() -> {
+            try {
+                startLocal();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
     }
 
     public void startLocal() throws IOException, InterruptedException, FichierIncoherentException {

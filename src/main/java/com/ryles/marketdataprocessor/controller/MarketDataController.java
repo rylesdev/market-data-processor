@@ -12,9 +12,11 @@ import java.util.Optional;
 @RequestMapping("/market-data")
 public class MarketDataController {
     private final MarketDataService service;
+    private final Controller controller;
 
-    public MarketDataController(MarketDataService service) {
+    public MarketDataController(MarketDataService service, Controller controller) {
         this.service = service;
+        this.controller = controller;
     }
 
     // Mettre un MarketData en BDD
@@ -26,8 +28,7 @@ public class MarketDataController {
     // Mettre un fichier dans la pipeline Controller
     @PostMapping("/files")
     public void insertFile(@RequestParam("fichier") MultipartFile fichier) throws IOException {
-        Controller c = new Controller(service);
-        c.process(fichier);
+        this.controller.process(fichier);
     }
 
     // Récupérer les infos d'un MarketData à partir de son ID
