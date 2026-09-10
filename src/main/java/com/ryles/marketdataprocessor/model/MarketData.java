@@ -47,6 +47,10 @@ public class MarketData {
         return sb.toString();
     }
 
+    public int getId() {
+        return this.id;
+    }
+
     public String getSymbole() {
         return this.symbole;
     }
