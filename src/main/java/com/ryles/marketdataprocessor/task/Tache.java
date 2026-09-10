@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Tache implements Runnable {
-    private MarketDataService service;
+    private final MarketDataService service;
     private InputStream fichier;
     private String nomFichier;
 

@@ -14,7 +14,7 @@ import java.nio.file.WatchKey;
 import java.util.*;
 
 public class Controller {
-    private MarketDataService service;
+    private final MarketDataService service;
 
     public Controller(MarketDataService service) {
         this.service = service;
