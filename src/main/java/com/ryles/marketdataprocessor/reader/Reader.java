@@ -2,17 +2,20 @@ package com.ryles.marketdataprocessor.reader;
 
 import com.ryles.marketdataprocessor.exception.EmptyFileException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Reader {
-    private Path fichier;
+    private InputStream fichier;
     private List<String> resultats;
 
-    public Reader(Path fichier) {
+    public Reader(InputStream fichier) {
         this.fichier = fichier;
         this.resultats = new ArrayList<>();
     }
@@ -20,7 +23,7 @@ public class Reader {
     // Ajoute les lignes à la liste des résultats
     public void readAllLines() throws IOException, EmptyFileException, InterruptedException {
         Thread.sleep(500);
-        List<String> lignes = Files.readAllLines(this.fichier);
+        List<String> lignes = new BufferedReader(new InputStreamReader(this.fichier)).lines().toList();
         if (lignes.isEmpty()) {
             throw new EmptyFileException("Le fichier est vide");
         }
@@ -30,9 +33,5 @@ public class Reader {
     // Retourne les lignes
     public List<String> getResultats() {
         return this.resultats;
-    }
-
-    public String getNomFichier() {
-        return this.fichier.toString();
     }
 }

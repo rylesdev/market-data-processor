@@ -6,19 +6,25 @@ import com.ryles.marketdataprocessor.parser.Parser;
 import com.ryles.marketdataprocessor.parser.ParserCSV;
 import com.ryles.marketdataprocessor.parser.ParserJSON;
 import com.ryles.marketdataprocessor.reader.Reader;
+import com.ryles.marketdataprocessor.service.MarketDataService;
 import com.ryles.marketdataprocessor.stats.Stats;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Tache implements Runnable {
-    private Path fichier;
+    private MarketDataService service;
+    private InputStream fichier;
+    private String nomFichier;
 
-    public Tache(Path fichier) {
+    public Tache(MarketDataService service, InputStream fichier, String nomFichier) {
+        this.service = service;
         this.fichier = fichier;
+        this.nomFichier = nomFichier;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class Tache implements Runnable {
 
         Parser parser;
 
-        String nom = reader.getNomFichier();
+        String nom = this.nomFichier;
 
         if (nom.endsWith(".csv")) {
             parser = new ParserCSV(reader.getResultats());
@@ -46,6 +52,10 @@ public class Tache implements Runnable {
         }
 
         List<MarketData> listeMarketData = parser.parsing();
+
+        for (MarketData var : listeMarketData) {
+            service.insert(var);
+        }
 
         System.out.println("Parsing : \n");
         Set<String> symboles = new HashSet<>();

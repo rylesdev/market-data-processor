@@ -2,16 +2,25 @@ package com.ryles.marketdataprocessor.controller;
 
 import com.ryles.marketdataprocessor.exception.FichierIncoherentException;
 import com.ryles.marketdataprocessor.receiver.Receiver;
+import com.ryles.marketdataprocessor.service.MarketDataService;
 import com.ryles.marketdataprocessor.task.Tache;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchKey;
 import java.util.*;
 
 public class Controller {
+    private MarketDataService service;
 
-    public void start() throws IOException, InterruptedException, FichierIncoherentException {
+    public Controller(MarketDataService service) {
+        this.service = service;
+    }
+
+    public void startLocal() throws IOException, InterruptedException, FichierIncoherentException {
         Receiver receiver = new Receiver(Path.of("src", "main", "resources", "input"));
         while (true) {
             WatchKey key = receiver.take();
@@ -19,12 +28,21 @@ public class Controller {
             receiver.reset(key);
 
             for (Path fichier : receiver.getFichiers()) {
-                Tache tache = new Tache(fichier);
+                InputStream inputStream = Files.newInputStream(fichier);
+                Tache tache = new Tache(service, inputStream, fichier.toString());
                 Thread thread = new Thread(tache);
                 thread.start();
             }
 
             receiver.resetFichier();
         }
+    }
+
+    public void process(MultipartFile fichier) throws IOException {
+        InputStream inputStream = fichier.getInputStream();
+        String nomFichier = fichier.getOriginalFilename();
+        Tache tache = new Tache(service,inputStream,nomFichier);
+        Thread thread = new Thread(tache);
+        thread.start();
     }
 }

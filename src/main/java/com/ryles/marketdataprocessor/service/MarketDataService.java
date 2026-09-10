@@ -14,23 +14,30 @@ public class MarketDataService {
         this.repository = repository;
     }
 
+    // Create
     public MarketData insert(MarketData mD) {
         return this.repository.save(mD);
     }
 
-    public Optional<MarketData> select(MarketData mD) {
-        return this.repository.findById(mD.getId());
+    // Read
+    public Optional<MarketData> select(int id) {
+        return this.repository.findById(id);
     }
 
-    // Ma logique c'est de mettre en input le MD actuel et le nouveau MD qu'on veut update à sa place
-    // Je vais récupérer l'ID du MD actuel, puis je vais donner l'ID du MD et je vais lui dire de le remplacer par le nouveau MD
-    public void update(MarketData mD, MarketData newMD) {
-        Optional<MarketData> temp = this.repository.findById(mD.getId());
-        int oldMD = temp.orElseThrow().getId();
-        this.repository.update(oldMD,newMD);
+    // Update
+    public MarketData update(int id, MarketData newMD) {
+        MarketData mD = this.repository.findById(id).orElseThrow();
+
+        mD.setSymbole(newMD.getSymbole());
+        mD.setDate(newMD.getDate());
+        mD.setPrix(newMD.getPrix());
+        mD.setVolume(newMD.getVolume());
+
+        return this.repository.save(mD);
     }
 
-    public void delete(MarketData mD) {
-        this.repository.deleteById(mD.getId());
+    // Delete
+    public void delete(int id) {
+        this.repository.deleteById(id);
     }
 }

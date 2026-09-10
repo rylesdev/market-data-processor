@@ -26,9 +26,13 @@ public class MarketData {
     @Column(name = "mD_volume")
     private long volume;
 
+    // Ce constructeur est utilisé par la BDD
+    // Il récupère le MD en BDD puis le transforme en MD en code avec ce constructeur
     public MarketData() {
     }
 
+    // Ce constructeur est utilisé par le code
+    // L'ID sera généré en BDD lors de l'insertion puis récupéré par Hibernate pour l'insérer
     public MarketData(String symbole, LocalDateTime date, BigDecimal prix, long volume) {
         this.symbole = symbole;
         this.date = date;
@@ -65,5 +69,21 @@ public class MarketData {
 
     public long getVolume() {
         return this.volume;
+    }
+
+    public void setSymbole(String symbole) {
+        this.symbole = symbole;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public void setPrix(BigDecimal prix) {
+        this.prix = prix;
+    }
+
+    public void setVolume(long volume) {
+        this.volume = volume;
     }
 }
