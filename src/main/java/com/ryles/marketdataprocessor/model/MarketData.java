@@ -26,7 +26,7 @@ public class MarketData {
     @Column(name = "mD_volume")
     private long volume;
 
-    // Ce constructeur est utilisé par la BDD
+    // Ce constructeur est utilisé par la JPA/Hibernate
     // Il récupère le MD en BDD puis le transforme en MD en code avec ce constructeur
     public MarketData() {
     }
@@ -43,10 +43,10 @@ public class MarketData {
     public String toString() {
         StringBuffer sb = new StringBuffer();
 
-        sb.append("Symbole : " + this.symbole);
-        sb.append("Date : " + this.date);
-        sb.append("Prix : " + this.prix);
-        sb.append("Volume : " + this.volume);
+        sb.append("Symbole : " + this.symbole + "\n");
+        sb.append("Date : " + this.date + "\n");
+        sb.append("Prix : " + this.prix + "\n");
+        sb.append("Volume : " + this.volume + "\n");
 
         return sb.toString();
     }
