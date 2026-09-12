@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchKey;
@@ -43,10 +44,33 @@ public class Controller {
             receiver.pollEvents(key);
             receiver.reset(key);
 
+            // Lance un thread par fichier pour éviter qu'un fichier verrouillé bloque le traitement des autres
             for (Path fichier : receiver.getFichiers()) {
-                InputStream inputStream = Files.newInputStream(fichier);
-                Tache tache = new Tache(producer, inputStream, fichier.toString());
-                Thread thread = new Thread(tache);
+
+                Thread thread = new Thread(() -> {
+                    InputStream inputStream = null;
+                    boolean fichierOuvert = false;
+
+                    while (!fichierOuvert) {
+                        try {
+                            inputStream = Files.newInputStream(fichier);
+                            fichierOuvert = true;
+                        } catch (FileSystemException e) {
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                                return;
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    Tache tache = new Tache(producer, inputStream, fichier.toString());
+                    tache.run();
+                });
+
                 thread.start();
             }
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,8 +25,10 @@ public class MarketDataController {
 
     // Mettre un MarketData en BDD
     @PostMapping
-    public void insertMarketData(@RequestBody MarketData mD) {
-        this.producer.insert(mD.getSymbole(),(mD));
+    public void insertMarketData(@RequestBody List<MarketData> mD) {
+        for (MarketData var : mD) {
+            this.producer.insert(var.getSymbole(),(var));
+        }
     }
 
     // Mettre un fichier dans la pipeline Controller

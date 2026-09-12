@@ -15,7 +15,6 @@ public class MarketDataConsumer {
 
     @KafkaListener(topics = "market-data", groupId = "market-data-group")
     public void receive(MarketData mD) {
-        System.out.println("Résultat : " + mD);
-        // this.service.insert(mD);
+        this.service.insert(mD);
     }
 }

@@ -22,7 +22,6 @@ public class Reader {
 
     // Ajoute les lignes à la liste des résultats
     public void readAllLines() throws IOException, EmptyFileException, InterruptedException {
-        Thread.sleep(500);
         List<String> lignes = new BufferedReader(new InputStreamReader(this.fichier)).lines().toList();
         if (lignes.isEmpty()) {
             throw new EmptyFileException("Le fichier est vide");
