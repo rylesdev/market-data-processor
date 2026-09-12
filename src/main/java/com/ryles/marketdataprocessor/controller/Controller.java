@@ -1,8 +1,8 @@
 package com.ryles.marketdataprocessor.controller;
 
 import com.ryles.marketdataprocessor.exception.FichierIncoherentException;
+import com.ryles.marketdataprocessor.producer.MarketDataProducer;
 import com.ryles.marketdataprocessor.receiver.Receiver;
-import com.ryles.marketdataprocessor.service.MarketDataService;
 import com.ryles.marketdataprocessor.task.Tache;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
@@ -17,10 +17,10 @@ import java.util.*;
 
 @Component
 public class Controller {
-    private final MarketDataService service;
+    private final MarketDataProducer producer;
 
-    public Controller(MarketDataService service) {
-        this.service = service;
+    public Controller(MarketDataProducer producer) {
+        this.producer = producer;
     }
 
     @PostConstruct
@@ -45,7 +45,7 @@ public class Controller {
 
             for (Path fichier : receiver.getFichiers()) {
                 InputStream inputStream = Files.newInputStream(fichier);
-                Tache tache = new Tache(service, inputStream, fichier.toString());
+                Tache tache = new Tache(producer, inputStream, fichier.toString());
                 Thread thread = new Thread(tache);
                 thread.start();
             }
@@ -57,7 +57,7 @@ public class Controller {
     public void process(MultipartFile fichier) throws IOException {
         InputStream inputStream = fichier.getInputStream();
         String nomFichier = fichier.getOriginalFilename();
-        Tache tache = new Tache(service,inputStream,nomFichier);
+        Tache tache = new Tache(producer,inputStream,nomFichier);
         Thread thread = new Thread(tache);
         thread.start();
     }
