@@ -1,6 +1,7 @@
 package com.ryles.marketdataprocessor.controller;
 
 import com.ryles.marketdataprocessor.model.MarketData;
+import com.ryles.marketdataprocessor.producer.MarketDataProducer;
 import com.ryles.marketdataprocessor.service.MarketDataService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,17 +13,19 @@ import java.util.Optional;
 @RequestMapping("/market-data")
 public class MarketDataController {
     private final MarketDataService service;
+    private final MarketDataProducer producer;
     private final Controller controller;
 
-    public MarketDataController(MarketDataService service, Controller controller) {
+    public MarketDataController(MarketDataService service, MarketDataProducer producer, Controller controller) {
         this.service = service;
+        this.producer = producer;
         this.controller = controller;
     }
 
     // Mettre un MarketData en BDD
     @PostMapping
-    public MarketData insertMarketData(@RequestBody MarketData mD) {
-        return this.service.insert(mD);
+    public void insertMarketData(@RequestBody MarketData mD) {
+        this.producer.insert(mD.getSymbole(),(mD));
     }
 
     // Mettre un fichier dans la pipeline Controller
