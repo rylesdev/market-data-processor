@@ -1,0 +1,223 @@
+<div class="container">
+
+  <h1>Market Data Processor</h1>
+
+  @if (loading) {
+    <div class="status loading">
+      Chargement...
+    </div>
+  }
+
+  @if (message) {
+    <div class="status success">
+      {{ message }}
+    </div>
+  }
+
+  @if (error) {
+    <div class="status error">
+      {{ error }}
+    </div>
+  }
+
+
+  <section>
+
+    <h2>Ajouter un MarketData</h2>
+
+    <div class="form-grid">
+
+      <div>
+        <label>Symbole</label>
+        <input
+          type="text"
+          [(ngModel)]="symbole"
+        >
+      </div>
+
+      <div>
+        <label>Date</label>
+        <input
+          type="datetime-local"
+          [(ngModel)]="date"
+        >
+      </div>
+
+      <div>
+        <label>Prix</label>
+        <input
+          type="number"
+          [(ngModel)]="prix"
+        >
+      </div>
+
+      <div>
+        <label>Volume</label>
+        <input
+          type="number"
+          [(ngModel)]="volume"
+        >
+      </div>
+
+    </div>
+
+    <button (click)="ajouter()">
+      Ajouter à la liste
+    </button>
+
+
+    <h3>MarketData en attente</h3>
+
+    @if (listeMarketData.length === 0) {
+      <p class="empty">
+        Aucun MarketData en attente.
+      </p>
+    }
+
+    @for (marketData of listeMarketData; track $index) {
+      <div class="market-data-row">
+        <strong>{{ marketData.symbole }}</strong>
+        <span>{{ marketData.date }}</span>
+        <span>{{ marketData.prix }}</span>
+        <span>{{ marketData.volume }}</span>
+      </div>
+    }
+
+    <button
+      (click)="envoyer()"
+      [disabled]="loading"
+    >
+      Envoyer
+    </button>
+
+  </section>
+
+
+  <section>
+
+    <h2>Rechercher</h2>
+
+    <div class="inline-form">
+
+      <input
+        type="number"
+        [(ngModel)]="idRecherche"
+        placeholder="ID"
+      >
+
+      <button
+        (click)="rechercher()"
+        [disabled]="loading"
+      >
+        Rechercher
+      </button>
+
+    </div>
+
+    @if (marketData) {
+
+      <div class="result">
+
+        <p>
+          <strong>Symbole :</strong>
+          {{ marketData.symbole }}
+        </p>
+
+        <p>
+          <strong>Date :</strong>
+          {{ marketData.date }}
+        </p>
+
+        <p>
+          <strong>Prix :</strong>
+          {{ marketData.prix }}
+        </p>
+
+        <p>
+          <strong>Volume :</strong>
+          {{ marketData.volume }}
+        </p>
+
+      </div>
+    }
+
+  </section>
+
+
+  <section>
+
+    <h2>Modifier</h2>
+
+    <p class="info">
+      Les valeurs utilisées sont celles du formulaire d'ajout situé en haut.
+    </p>
+
+    <div class="inline-form">
+
+      <input
+        type="number"
+        [(ngModel)]="idModification"
+        placeholder="ID"
+      >
+
+      <button
+        (click)="modifier()"
+        [disabled]="loading"
+      >
+        Modifier
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <section>
+
+    <h2>Supprimer</h2>
+
+    <div class="inline-form">
+
+      <input
+        type="number"
+        [(ngModel)]="idSuppression"
+        placeholder="ID"
+      >
+
+      <button
+        class="delete"
+        (click)="supprimer()"
+        [disabled]="loading"
+      >
+        Supprimer
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <section>
+
+    <h2>Importer un fichier</h2>
+
+    <p class="info">
+      Formats acceptés : CSV et JSON
+    </p>
+
+    <input
+      type="file"
+      accept=".csv,.json"
+      (change)="onFileSelected($event)"
+    >
+
+    <button
+      (click)="envoyerFichier()"
+      [disabled]="loading"
+    >
+      Envoyer le fichier
+    </button>
+
+  </section>
+
+</div>

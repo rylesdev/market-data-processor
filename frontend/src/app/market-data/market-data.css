@@ -1,0 +1,139 @@
+:host {
+  font-family: Arial, sans-serif;
+  color: #222;
+}
+
+.container {
+  width: 850px;
+  max-width: 90%;
+  margin: 40px auto;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin-top: 25px;
+}
+
+section {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 25px;
+  background: white;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.form-grid div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input {
+  padding: 9px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button {
+  padding: 9px 15px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  background: #f2f2f2;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #e5e5e5;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.delete {
+  background: #f7e4e4;
+}
+
+.delete:hover {
+  background: #efd2d2;
+}
+
+.inline-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.inline-form input {
+  width: 150px;
+}
+
+.inline-form button {
+  margin-top: 0;
+}
+
+.market-data-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 100px 100px;
+  gap: 15px;
+
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f7f7f7;
+  border-radius: 4px;
+}
+
+.result p {
+  margin: 7px 0;
+}
+
+.status {
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.loading {
+  background: #f1f1f1;
+}
+
+.success {
+  background: #e7f5e7;
+}
+
+.error {
+  background: #f8dddd;
+}
+
+.info,
+.empty {
+  color: #666;
+  font-size: 14px;
+}
