@@ -20,7 +20,7 @@ L’application permet actuellement de :
 - consommer les messages Kafka ;
 - sérialiser et désérialiser les messages en JSON ;
 - persister les données reçues dans PostgreSQL ;
-- gérer les états de chargement, succès et erreur côté Angular.
+- gérer les états de chargement, de succès et d’erreur côté Angular.
 
 ## Architecture
 
@@ -319,10 +319,6 @@ Le frontend est disponible sur :
 http://localhost:4200
 ```
 
-
-Tu peux éventuellement la remplacer par quelque chose de plus exact :
-
-```md
 ## Configuration
 
 Le fichier `application.properties` contient la configuration locale de l’application et n’est pas versionné dans le repository.
