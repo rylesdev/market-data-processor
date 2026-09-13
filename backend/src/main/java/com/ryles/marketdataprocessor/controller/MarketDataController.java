@@ -5,11 +5,13 @@ import com.ryles.marketdataprocessor.producer.MarketDataProducer;
 import com.ryles.marketdataprocessor.service.MarketDataService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/market-data")
 public class MarketDataController {
