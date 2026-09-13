@@ -45,7 +45,7 @@ public class MarketDataController {
         return this.service.select(id);
     }
 
-    // Modifier les infos d'un MarketData à partir de l'ID d'un autre MarketData
+    // Modifier un MarketData à partir de son ID
     @PutMapping("/{id}")
     public MarketData updateMarketData(@PathVariable int id, @RequestBody MarketData mD) {
         return this.service.update(id,mD);

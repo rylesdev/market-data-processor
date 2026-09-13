@@ -319,16 +319,10 @@ Le frontend est disponible sur :
 http://localhost:4200
 ```
 
+
+Tu peux éventuellement la remplacer par quelque chose de plus exact :
+
+```md
 ## Configuration
 
-Les informations sensibles ne doivent pas être versionnées dans le repository.
-
-Exemple de configuration :
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/market_data_processor
-spring.datasource.username=${DB_USERNAME}
-spring.datasource.password=${DB_PASSWORD}
-```
-
-Il est recommandé de fournir les informations sensibles via des variables d’environnement.
+Le fichier `application.properties` contient la configuration locale de l’application et n’est pas versionné dans le repository.
